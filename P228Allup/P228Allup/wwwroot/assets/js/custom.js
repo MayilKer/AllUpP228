@@ -15,16 +15,18 @@
             })
     })
 
-
     $(document).on("click", ".product-close", function (e) {
         e.preventDefault();
-        let url = $(this).attr("href");
-        fetch(url).then(response => {
-            return response.text();
-        }).then(data => {
-            $(".header-cart").html(data);
-        })
-    });
+
+        let url = $(this).attr('href');
+
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                $(".header-cart").html(data);
+            })
+    })
+
 
 
     $(".productModalBtn").click(function (e) {

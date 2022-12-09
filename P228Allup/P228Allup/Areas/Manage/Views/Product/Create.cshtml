@@ -1,0 +1,99 @@
+﻿@model Product
+@{
+    ViewData["Title"] = "Create";
+    List<Category> categories = ViewBag.Category;
+    List<Brand> brands = ViewBag.Brands;
+    List<Tag> tags = ViewBag.Tags;
+    //SelectList selectListItems = new SelectList(categories, nameof(Category.Id), nameof(Category.Name),5);
+    SelectList selectListItems = new SelectList(categories, nameof(Category.Id), nameof(Category.Name));
+    SelectList selectListBrand = new SelectList(brands, nameof(Brand.Id), nameof(Brand.Name));
+    SelectList selectListTag = new SelectList(tags, nameof(Tag.Id), nameof(Tag.Name));
+}
+
+<h1>Create Category</h1>
+<div class=" row justify-content-center">
+    <div class=" col-lg-8">
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" class="form-control" placeholder="Name">
+                <span asp-validation-for="Title" class="text text-danger"></span>
+            </div>
+            <div id="mainImage" class="form-group">
+                <label asp-for="MainImageFile"></label>
+                <input asp-for="MainImageFile" accept="image/jpeg" class="form-control">
+                <span asp-validation-for="MainImageFile" class="text text-danger"></span>
+            </div>
+            <div id="mainImage" class="form-group">
+                <label asp-for="MainImageFile"></label>
+                <input asp-for="MainImageFile" accept="image/jpeg" class="form-control">
+                <span asp-validation-for="MainImageFile" class="text text-danger"></span>
+            </div>
+            <div id="HoverImageFile" class="form-group">
+                <label asp-for="HoverImageFile"></label>
+                <input asp-for="HoverImageFile" accept="image/jpeg" class="form-control">
+                <span asp-validation-for="HoverImageFile" class="text text-danger"></span>
+            </div>
+            <div id="ProductImagesFile" class="form-group">
+                <label asp-for="ProductImagesFile"></label>
+                <input asp-for="ProductImagesFile" accept="image/jpeg" class="form-control">
+                <span asp-validation-for="ProductImagesFile" class="text text-danger"></span>
+            </div>
+            <div id="Price" class="form-group">
+                <label asp-for="Price"></label>
+                <input asp-for="Price" accept="image/jpeg" class="form-control">
+                <span asp-validation-for="Price" class="text text-danger"></span>
+            </div>
+            <div id="DiscountedPrice" class="form-group">
+                <label asp-for="DiscountedPrice"></label>
+                <input asp-for="DiscountedPrice" accept="image/jpeg" class="form-control">
+                <span asp-validation-for="DiscountedPrice" class="text text-danger"></span>
+            </div>
+            <div id="IsBestSeller" class="form-group">
+                <label asp-for="IsBestSeller"></label>
+                <input asp-for="IsBestSeller" accept="image/jpeg" class="form-control">
+                <span asp-validation-for="IsBestSeller" class="text text-danger"></span>
+            </div>
+            <div id="IsFeatured" class="form-group">
+                <label asp-for="IsFeatured"></label>
+                <input asp-for="IsFeatured" accept="image/jpeg" class="form-control">
+                <span asp-validation-for="IsFeatured" class="text text-danger"></span>
+            </div>
+            <div id="IsNewArrival" class="form-group">
+                <label asp-for="IsNewArrival"></label>
+                <input asp-for="IsNewArrival" accept="image/jpeg" class="form-control">
+                <span asp-validation-for="IsNewArrival" class="text text-danger"></span>
+            </div>
+            <div id="Count" class="form-group">
+                <label asp-for="Count"></label>
+                <input asp-for="Count" accept="image/jpeg" class="form-control">
+                <span asp-validation-for="Count" class="text text-danger"></span>
+            </div>
+            <div id="parentList" class="form-group">
+                <label>Select Tags</label>
+                <select class="form-control" asp-for="TagIds" asp-items="selectListTag">
+                    <option value="">Choose...</option>
+                </select>
+                <span asp-validation-for="TagIds" class="text-danger"></span>
+            </div>
+            <div id="parentList" class="form-group">
+                <label>Category</label>
+                <select asp-for="CategoryId" class="form-control" asp-items="selectListItems">
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div id="parentList" class="form-group">
+                <label>Brand</label>
+                <select asp-for="BrandId" class="form-control" asp-items="selectListBrand">
+                </select>
+                <span asp-validation-for="BrandId" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+</div>
+
+@section script{
+    @await Html.PartialAsync("_ValidationPartial")
+}
+

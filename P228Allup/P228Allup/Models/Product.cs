@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Http;
 
 namespace P228Allup.Models
 {
@@ -33,7 +35,16 @@ namespace P228Allup.Models
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 
+        [NotMapped]
+        public IFormFile[] ProductImagesFile { get; set; }
         public IEnumerable<ProductImage> ProductImages { get; set; }
         public IEnumerable<ProductTag> ProductTags { get; set; }
+
+        [NotMapped]
+        public IFormFile MainImageFile { get; set; }
+        [NotMapped]
+        public IFormFile HoverImageFile { get; set; }
+        [NotMapped]
+        public List<int> TagIds { get; set; } = new List<int>();
     }
 }

@@ -22,7 +22,7 @@
                         <h5 class="product-name"><a href="single-product.html">@basketVM.Title</a></h5>
                         <span class="product-price">€@basketVM.Price</span>
                         @*<span class="product-color"><strong>Color:</strong> White</span>*@
-                        <a asp-controller="basket" asp-action="deletefrombasket" asp-route-id="@basketVM.Id" class="product-close"><i class="fal fa-times"></i></a>
+                        <a asp-controller="Basket" asp-action="DeleteFromBasket" asp-route-id="@basketVM.Id" class="product-close"><i class="fal fa-times"></i></a>
                     </div>
                 </div>
             </li>

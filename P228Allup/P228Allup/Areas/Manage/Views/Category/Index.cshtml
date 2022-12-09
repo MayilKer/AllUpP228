@@ -6,6 +6,14 @@
 
 <!-- Page Heading -->
 <div class="row justify-content-between">
+    @{
+        if (TempData["error"] != null)
+        {
+            <input id="toster" hidden value="@TempData["error"]" />
+        }
+    }
+
+
     <div class="col-lg-2">
         <h1 class="h3 mb-4 text-gray-800">Categories Page</h1>
     </div>

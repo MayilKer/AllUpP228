@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using P228Allup.DAL;
+using P228Allup.Extension;
 using P228Allup.Models;
 using System;
 using System.Collections.Generic;
@@ -15,10 +17,13 @@ namespace P228Allup.Areas.Manage.Controllers
     public class CategoryController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IWebHostEnvironment _env;
 
-        public CategoryController(AppDbContext context)
+        public CategoryController(AppDbContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
+
         }
 
         public async Task<IActionResult> Index()
@@ -62,29 +67,20 @@ namespace P228Allup.Areas.Manage.Controllers
                     return View(category);
                 }
 
-                if (category.File.ContentType != "image/jpeg")
+                if (!category.File.CheckFileSize(1000))
+                {
+                    ModelState.AddModelError("File", "Fayl Olcusu maksimum 1000 kb olmalidir");
+                    return View(category);
+                }
+
+                if (!category.File.CheckFileType("image/jpeg"))
                 {
                     ModelState.AddModelError("File", "Fayl Tipi .jpg ve ya .jpeg olmalidir");
                     return View(category);
                 }
 
-                if ((category.File.Length / 1024) > 20)
-                {
-                    ModelState.AddModelError("File", "Fayl Olcusu maksimum 20 kb olmalidir");
-                    return View(category);
-                }
-
-                string fileName = Guid.NewGuid().ToString()+"-"+DateTime.UtcNow.AddHours(4).ToString("yyyyMMddHHmmss")+"-"+category.File.FileName;
-
-                string path = @"C:\Users\hamid.mammadov\Desktop\P228Allup\P228Allup\wwwroot\assets\images\" + fileName;
-
-                using (FileStream fileStream = new FileStream(path, FileMode.Create))
-                {
-                    await category.File.CopyToAsync(fileStream);
-                }
-
                 category.ParentId = null;
-                category.Image = fileName;
+                category.Image = category.File.CreateImage(_env, "assets", "images");
             }
             else
             {
@@ -186,17 +182,9 @@ namespace P228Allup.Areas.Manage.Controllers
                     return View(category);
                 }
 
-                string fileName = Guid.NewGuid().ToString() + "-" + DateTime.UtcNow.AddHours(4).ToString("yyyyMMddHHmmss") + "-" + category.File.FileName;
-
-                string path = @"C:\Users\hamid.mammadov\Desktop\P228Allup\P228Allup\wwwroot\assets\images\" + fileName;
-
-                using (FileStream fileStream = new FileStream(path, FileMode.Create))
-                {
-                    await category.File.CopyToAsync(fileStream);
-                }
+                existedCategory.Image = category.File.CreateImage(_env, "assets", "images");
 
                 existedCategory.ParentId = null;
-                existedCategory.Image = fileName;
             }
             else
             {
@@ -214,6 +202,8 @@ namespace P228Allup.Areas.Manage.Controllers
 
                 existedCategory.Image = null;
             }
+
+            TempData["error"] = "Error Oldu";
 
             existedCategory.IsMain = category.IsMain;
             existedCategory.Name = category.Name;
